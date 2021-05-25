@@ -8,6 +8,8 @@ from snapshot_smpl.smpl import Smpl
 import cv2
 import tqdm
 
+import pdb
+import trimesh
 
 def read_pickle(pkl_path):
     with open(pkl_path, 'rb') as f:
@@ -91,13 +93,13 @@ def extract_mask(masks, mask_dir):
         cv2.imwrite(os.path.join(mask_dir, '{}.png'.format(i)), mask)
 
 
-data_root = 'data/people_snapshot'
-videos = ['female-3-casual']
+data_root = 'data/custom'
+videos = ['female_fasker_2']
 
 # if you do not have these smpl models, you could download them from https://zjueducn-my.sharepoint.com/:u:/g/personal/pengsida_zju_edu_cn/Eb_JIyA74O1Cnfhvn1ddrG4BC9TMK31022TykVxGdRenUQ?e=JU8pPt
 model_paths = [
-    'basicModel_f_lbs_10_207_0_v1.0.0.pkl',
-    'basicmodel_m_lbs_10_207_0_v1.0.0.pkl'
+    '/directory/basicModel_f_lbs_10_207_0_v1.0.0.pkl',
+    '/directory/basicmodel_m_lbs_10_207_0_v1.0.0.pkl'
 ]
 
 for video in videos:
@@ -124,6 +126,8 @@ for video in videos:
 
     pose = pose[len(pose) - len(masks):]
     trans = trans[len(trans) - len(masks):]
+    
+    #pdb.set_trace()
 
     # process smpl parameters
     params = {'beta': np.array(betas), 'pose': pose, 'trans': trans}
@@ -138,10 +142,15 @@ for video in videos:
 
     img_dir = os.path.join(data_root, video, 'image')
     vertices_dir = os.path.join(data_root, video, 'vertices')
+    smpl_dir = os.path.join(data_root, video, 'smpl')
     os.system('mkdir -p {}'.format(vertices_dir))
+    os.system('mkdir -p {}'.format(smpl_dir))
 
     num_img = len(os.listdir(img_dir))
     for i in tqdm.tqdm(range(num_img)):
         base_smpl = Smpl(model_data)
         vertices, mesh = get_smpl(base_smpl, betas, pose[i], trans[i])
         np.save(os.path.join(vertices_dir, '{}.npy'.format(i)), vertices)
+        #trimesh.exchange.ply.export_ply(mesh)
+        o3d.io.write_triangle_mesh(os.path.join(smpl_dir, '{}.ply'.format(i)), mesh)
+        #mesh.export(os.path.join(vertices_dir, '{}.ply'.format(i)))
