@@ -164,6 +164,23 @@ class DatasetCatalog(object):
             'data_root': 'data/h36m/S11/Greeting',
             'split': 'test'
         }
+        
+        'Male_Fasker_1_Train': {
+            'data_root': 'data/custom/male_fasker_1_Apose',
+            'split': 'train'
+        },
+        'Male_Fasker_1_Test': {
+            'data_root': 'data/custom/male_fasker_1_Apose',
+            'split': 'test'
+        },
+        'Female_Fasker_1_Train': {
+            'data_root': 'data/custom/female_fasker_1_apose',
+            'split': 'train'
+        },
+        'Female_Fasker_1_Test': {
+            'data_root': 'data/custom/female_fasker_1_apose',
+            'split': 'test'
+        },
     }
 
     @staticmethod
