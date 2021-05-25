@@ -163,8 +163,7 @@ class DatasetCatalog(object):
         'H36M_S11G_Test': {
             'data_root': 'data/h36m/S11/Greeting',
             'split': 'test'
-        }
-        
+        }        
         'Male_Fasker_1_Train': {
             'data_root': 'data/custom/male_fasker_1_Apose',
             'split': 'train'
